@@ -1,0 +1,1071 @@
+{
+  "openapi": "3.1.0",
+  "info": {
+    "title": "SmartTrack API",
+    "version": "1.1.0",
+    "description": "Experimental connected-device monitoring. UTC instants, nullable measurements, explicit provenance."
+  },
+  "servers": [
+    {
+      "url": "http://127.0.0.1:8087",
+      "description": "Local simulator development; production requires HTTPS"
+    }
+  ],
+  "security": [
+    {
+      "bearerAuth": []
+    }
+  ],
+  "paths": {
+    "/v1/auth/register": {
+      "post": {
+        "summary": "Create a user",
+        "description": "",
+        "responses": {
+          "201": {
+            "description": "Success"
+          },
+          "400": {
+            "description": "Invalid v1 contract"
+          },
+          "401": {
+            "description": "Missing or expired credentials"
+          },
+          "403": {
+            "description": "Credential scope does not permit this action"
+          },
+          "404": {
+            "description": "Resource unavailable to this owner"
+          },
+          "409": {
+            "description": "Conflicting idempotency key or revision"
+          }
+        },
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/Credentials"
+              }
+            }
+          }
+        },
+        "security": []
+      }
+    },
+    "/v1/auth/login": {
+      "post": {
+        "summary": "Obtain a 12-hour opaque user token",
+        "description": "",
+        "responses": {
+          "200": {
+            "description": "Success",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Login"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Invalid v1 contract"
+          },
+          "401": {
+            "description": "Missing or expired credentials"
+          },
+          "403": {
+            "description": "Credential scope does not permit this action"
+          },
+          "404": {
+            "description": "Resource unavailable to this owner"
+          },
+          "409": {
+            "description": "Conflicting idempotency key or revision"
+          }
+        },
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/Credentials"
+              }
+            }
+          }
+        },
+        "security": []
+      }
+    },
+    "/v1/auth/logout": {
+      "post": {
+        "summary": "Revoke the current user token",
+        "description": "",
+        "responses": {
+          "200": {
+            "description": "Success"
+          },
+          "400": {
+            "description": "Invalid v1 contract"
+          },
+          "401": {
+            "description": "Missing or expired credentials"
+          },
+          "403": {
+            "description": "Credential scope does not permit this action"
+          },
+          "404": {
+            "description": "Resource unavailable to this owner"
+          },
+          "409": {
+            "description": "Conflicting idempotency key or revision"
+          }
+        }
+      }
+    },
+    "/v1/devices": {
+      "get": {
+        "summary": "List owned devices (user only)",
+        "description": "",
+        "responses": {
+          "200": {
+            "description": "Success",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/Device"
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Invalid v1 contract"
+          },
+          "401": {
+            "description": "Missing or expired credentials"
+          },
+          "403": {
+            "description": "Credential scope does not permit this action"
+          },
+          "404": {
+            "description": "Resource unavailable to this owner"
+          },
+          "409": {
+            "description": "Conflicting idempotency key or revision"
+          }
+        }
+      },
+      "post": {
+        "summary": "Register a device and show its secret once",
+        "description": "",
+        "responses": {
+          "201": {
+            "description": "Success",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/RegisteredDevice"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Invalid v1 contract"
+          },
+          "401": {
+            "description": "Missing or expired credentials"
+          },
+          "403": {
+            "description": "Credential scope does not permit this action"
+          },
+          "404": {
+            "description": "Resource unavailable to this owner"
+          },
+          "409": {
+            "description": "Conflicting idempotency key or revision"
+          }
+        },
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/Registration"
+              }
+            }
+          }
+        }
+      }
+    },
+    "/v1/devices/{device}/configuration": {
+      "get": {
+        "summary": "Read owned device configuration",
+        "description": "",
+        "responses": {
+          "200": {
+            "description": "Success",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/StoredConfiguration"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Invalid v1 contract"
+          },
+          "401": {
+            "description": "Missing or expired credentials"
+          },
+          "403": {
+            "description": "Credential scope does not permit this action"
+          },
+          "404": {
+            "description": "Resource unavailable to this owner"
+          },
+          "409": {
+            "description": "Conflicting idempotency key or revision"
+          }
+        },
+        "parameters": [
+          {
+            "name": "device",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ]
+      },
+      "put": {
+        "summary": "Save configuration using optimistic revision",
+        "description": "",
+        "responses": {
+          "200": {
+            "description": "Success",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/StoredConfiguration"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Invalid v1 contract"
+          },
+          "401": {
+            "description": "Missing or expired credentials"
+          },
+          "403": {
+            "description": "Credential scope does not permit this action"
+          },
+          "404": {
+            "description": "Resource unavailable to this owner"
+          },
+          "409": {
+            "description": "Conflicting idempotency key or revision"
+          }
+        },
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/Configuration"
+              }
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "device",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ]
+      }
+    },
+    "/v1/devices/{device}/rotate-token": {
+      "post": {
+        "summary": "Revoke and replace a device token",
+        "description": "",
+        "responses": {
+          "200": {
+            "description": "Success",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "deviceToken": {
+                      "type": "string"
+                    }
+                  },
+                  "required": [
+                    "deviceToken"
+                  ],
+                  "additionalProperties": false
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Invalid v1 contract"
+          },
+          "401": {
+            "description": "Missing or expired credentials"
+          },
+          "403": {
+            "description": "Credential scope does not permit this action"
+          },
+          "404": {
+            "description": "Resource unavailable to this owner"
+          },
+          "409": {
+            "description": "Conflicting idempotency key or revision"
+          }
+        },
+        "parameters": [
+          {
+            "name": "device",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ]
+      }
+    },
+    "/v1/telemetry": {
+      "post": {
+        "summary": "Ingest a canonical v1 snapshot",
+        "description": "Device tokens are scoped to one device. User tokens may sync owned devices. Tuple (deviceId, sessionId, sequence) is idempotent. Different content at the same tuple returns 409. Simulator sources require explicit backend opt-in.",
+        "responses": {
+          "200": {
+            "description": "Success",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Accepted"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Invalid v1 contract"
+          },
+          "401": {
+            "description": "Missing or expired credentials"
+          },
+          "403": {
+            "description": "Credential scope does not permit this action"
+          },
+          "404": {
+            "description": "Resource unavailable to this owner"
+          },
+          "409": {
+            "description": "Conflicting idempotency key or revision"
+          }
+        },
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/Telemetry"
+              }
+            }
+          }
+        }
+      }
+    },
+    "/v1/synchronization": {
+      "post": {
+        "summary": "Replay up to 100 cached snapshots",
+        "description": "Each snapshot commits independently. If a later snapshot fails, replay the batch; earlier accepted tuples deduplicate safely. A highest-sequence watermark is diagnostic, not a contiguous acknowledgement of missing sequences.",
+        "responses": {
+          "200": {
+            "description": "Success",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/Accepted"
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Invalid v1 contract"
+          },
+          "401": {
+            "description": "Missing or expired credentials"
+          },
+          "403": {
+            "description": "Credential scope does not permit this action"
+          },
+          "404": {
+            "description": "Resource unavailable to this owner"
+          },
+          "409": {
+            "description": "Conflicting idempotency key or revision"
+          }
+        },
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "array",
+                "minItems": 1,
+                "maxItems": 100,
+                "items": {
+                  "$ref": "#/components/schemas/Telemetry"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/v1/devices/{device}/latest": {
+      "get": {
+        "summary": "Read newest measurement by effective measurement time",
+        "description": "",
+        "responses": {
+          "200": {
+            "description": "Success",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Reading"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Invalid v1 contract"
+          },
+          "401": {
+            "description": "Missing or expired credentials"
+          },
+          "403": {
+            "description": "Credential scope does not permit this action"
+          },
+          "404": {
+            "description": "Resource unavailable to this owner"
+          },
+          "409": {
+            "description": "Conflicting idempotency key or revision"
+          }
+        },
+        "parameters": [
+          {
+            "name": "device",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ]
+      }
+    },
+    "/v1/devices/{device}/history": {
+      "get": {
+        "summary": "Query received-time history, newest first",
+        "description": "Half-open UTC range [from,to), maximum 31 days. Clients must disclose truncation at the requested limit.",
+        "responses": {
+          "200": {
+            "description": "Success",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/Reading"
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Invalid v1 contract"
+          },
+          "401": {
+            "description": "Missing or expired credentials"
+          },
+          "403": {
+            "description": "Credential scope does not permit this action"
+          },
+          "404": {
+            "description": "Resource unavailable to this owner"
+          },
+          "409": {
+            "description": "Conflicting idempotency key or revision"
+          }
+        },
+        "parameters": [
+          {
+            "name": "device",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "from",
+            "in": "query",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "date-time"
+            }
+          },
+          {
+            "name": "to",
+            "in": "query",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "date-time"
+            }
+          },
+          {
+            "name": "limit",
+            "in": "query",
+            "schema": {
+              "type": "integer",
+              "minimum": 1,
+              "maximum": 2000,
+              "default": 500
+            }
+          }
+        ]
+      }
+    },
+    "/v1/devices/{device}/synchronization": {
+      "get": {
+        "summary": "Inspect session high-water marks",
+        "description": "",
+        "responses": {
+          "200": {
+            "description": "Success",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "type": "object"
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Invalid v1 contract"
+          },
+          "401": {
+            "description": "Missing or expired credentials"
+          },
+          "403": {
+            "description": "Credential scope does not permit this action"
+          },
+          "404": {
+            "description": "Resource unavailable to this owner"
+          },
+          "409": {
+            "description": "Conflicting idempotency key or revision"
+          }
+        },
+        "parameters": [
+          {
+            "name": "device",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ]
+      }
+    },
+    "/v1/devices/{device}/alerts": {
+      "get": {
+        "summary": "List up to 200 recent alerts (user only)",
+        "description": "",
+        "responses": {
+          "200": {
+            "description": "Success",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/Alert"
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Invalid v1 contract"
+          },
+          "401": {
+            "description": "Missing or expired credentials"
+          },
+          "403": {
+            "description": "Credential scope does not permit this action"
+          },
+          "404": {
+            "description": "Resource unavailable to this owner"
+          },
+          "409": {
+            "description": "Conflicting idempotency key or revision"
+          }
+        },
+        "parameters": [
+          {
+            "name": "device",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ]
+      }
+    },
+    "/v1/alerts/{alert}/acknowledgement": {
+      "post": {
+        "summary": "Acknowledge an owned alert idempotently",
+        "description": "",
+        "responses": {
+          "200": {
+            "description": "Success"
+          },
+          "400": {
+            "description": "Invalid v1 contract"
+          },
+          "401": {
+            "description": "Missing or expired credentials"
+          },
+          "403": {
+            "description": "Credential scope does not permit this action"
+          },
+          "404": {
+            "description": "Resource unavailable to this owner"
+          },
+          "409": {
+            "description": "Conflicting idempotency key or revision"
+          }
+        },
+        "parameters": [
+          {
+            "name": "alert",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ]
+      }
+    },
+    "/v1/stream": {
+      "get": {
+        "summary": "Upgrade to authenticated WebSocket",
+        "description": "HTTP Authorization: Bearer usr_\u2026 on upgrade; never put credentials in the URL. User only. Sends Reading JSON after database commit. REST latest/history recover missed frames. Server does not promise exactly-once delivery.",
+        "responses": {
+          "200": {
+            "description": "Success"
+          },
+          "400": {
+            "description": "Invalid v1 contract"
+          },
+          "401": {
+            "description": "Missing or expired credentials"
+          },
+          "403": {
+            "description": "Credential scope does not permit this action"
+          },
+          "404": {
+            "description": "Resource unavailable to this owner"
+          },
+          "409": {
+            "description": "Conflicting idempotency key or revision"
+          }
+        },
+        "parameters": [
+          {
+            "name": "deviceId",
+            "in": "query",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ]
+      }
+    },
+    "/actuator/health": {
+      "get": {
+        "summary": "Check process/database health",
+        "description": "",
+        "responses": {
+          "200": {
+            "description": "Success"
+          },
+          "400": {
+            "description": "Invalid v1 contract"
+          },
+          "401": {
+            "description": "Missing or expired credentials"
+          },
+          "403": {
+            "description": "Credential scope does not permit this action"
+          },
+          "404": {
+            "description": "Resource unavailable to this owner"
+          },
+          "409": {
+            "description": "Conflicting idempotency key or revision"
+          }
+        },
+        "security": []
+      }
+    },
+    "/v1/info": {
+      "get": {
+        "summary": "Identify the SmartTrack backend before sign-in",
+        "description": "",
+        "responses": {
+          "200": {
+            "description": "Success",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "application": {
+                      "type": "string",
+                      "const": "io.smarttrack.backend"
+                    },
+                    "version": {
+                      "type": "string"
+                    },
+                    "telemetryProtocolVersion": {
+                      "type": "integer",
+                      "const": 1
+                    }
+                  },
+                  "required": [
+                    "application",
+                    "version",
+                    "telemetryProtocolVersion"
+                  ],
+                  "additionalProperties": false
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Invalid v1 contract"
+          },
+          "401": {
+            "description": "Missing or expired credentials"
+          },
+          "403": {
+            "description": "Credential scope does not permit this action"
+          },
+          "404": {
+            "description": "Resource unavailable to this owner"
+          },
+          "409": {
+            "description": "Conflicting idempotency key or revision"
+          }
+        },
+        "security": []
+      }
+    }
+  },
+  "components": {
+    "securitySchemes": {
+      "bearerAuth": {
+        "type": "http",
+        "scheme": "bearer",
+        "description": "Opaque usr_ user token or dev_ device token. Secrets are never database passwords."
+      }
+    },
+    "schemas": {
+      "Credentials": {
+        "type": "object",
+        "properties": {
+          "email": {
+            "type": "string",
+            "format": "email",
+            "maxLength": 254
+          },
+          "password": {
+            "type": "string",
+            "minLength": 12,
+            "maxLength": 72,
+            "writeOnly": true
+          }
+        },
+        "required": [
+          "email",
+          "password"
+        ],
+        "additionalProperties": false
+      },
+      "Registration": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string",
+            "pattern": "^[A-Za-z0-9_-]{3,64}$"
+          },
+          "name": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 80
+          }
+        },
+        "required": [
+          "id",
+          "name"
+        ],
+        "additionalProperties": false
+      },
+      "Configuration": {
+        "type": "object",
+        "properties": {
+          "revision": {
+            "type": "integer",
+            "minimum": 0
+          },
+          "telemetryIntervalMs": {
+            "type": "integer",
+            "minimum": 1000,
+            "maximum": 60000
+          },
+          "timezone": {
+            "type": "string"
+          }
+        },
+        "required": [
+          "revision",
+          "telemetryIntervalMs",
+          "timezone"
+        ],
+        "additionalProperties": false
+      },
+      "StoredConfiguration": {
+        "type": "object",
+        "properties": {
+          "revision": {
+            "type": "integer"
+          },
+          "telemetry_interval_ms": {
+            "type": "integer"
+          },
+          "timezone": {
+            "type": "string"
+          }
+        },
+        "required": [
+          "revision",
+          "telemetry_interval_ms",
+          "timezone"
+        ],
+        "additionalProperties": false
+      },
+      "Telemetry": {
+        "$ref": "./telemetry-v1.schema.json"
+      },
+      "Accepted": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string"
+          },
+          "duplicate": {
+            "type": "boolean"
+          }
+        },
+        "required": [
+          "id",
+          "duplicate"
+        ],
+        "additionalProperties": false
+      },
+      "Reading": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string"
+          },
+          "receivedAt": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "freshness": {
+            "type": "string",
+            "enum": [
+              "SIMULATED",
+              "OFFLINE",
+              "TIME_UNVERIFIED",
+              "DELAYED",
+              "LIVE"
+            ]
+          },
+          "telemetry": {
+            "$ref": "#/components/schemas/Telemetry"
+          }
+        },
+        "required": [
+          "id",
+          "receivedAt",
+          "freshness",
+          "telemetry"
+        ],
+        "additionalProperties": false
+      },
+      "Device": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string"
+          },
+          "name": {
+            "type": "string"
+          },
+          "created_at": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "last_received_at": {
+            "type": [
+              "string",
+              "null"
+            ],
+            "format": "date-time"
+          }
+        },
+        "required": [
+          "id",
+          "name",
+          "created_at",
+          "last_received_at"
+        ],
+        "additionalProperties": false
+      },
+      "Alert": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string"
+          },
+          "kind": {
+            "type": "string"
+          },
+          "severity": {
+            "type": "string"
+          },
+          "source": {
+            "type": "string"
+          },
+          "created_at": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "acknowledged_at": {
+            "type": [
+              "string",
+              "null"
+            ],
+            "format": "date-time"
+          }
+        },
+        "required": [
+          "id",
+          "kind",
+          "severity",
+          "source",
+          "created_at",
+          "acknowledged_at"
+        ],
+        "additionalProperties": false
+      },
+      "Problem": {
+        "type": "object",
+        "properties": {
+          "title": {
+            "type": "string"
+          },
+          "status": {
+            "type": "integer"
+          },
+          "detail": {
+            "type": "string"
+          },
+          "instance": {
+            "type": "string"
+          }
+        }
+      },
+      "Login": {
+        "type": "object",
+        "properties": {
+          "token": {
+            "type": "string"
+          },
+          "expiresAt": {
+            "type": "string",
+            "format": "date-time"
+          }
+        },
+        "required": [
+          "token",
+          "expiresAt"
+        ],
+        "additionalProperties": false
+      },
+      "RegisteredDevice": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string"
+          },
+          "name": {
+            "type": "string"
+          },
+          "deviceToken": {
+            "type": "string"
+          }
+        },
+        "required": [
+          "id",
+          "name",
+          "deviceToken"
+        ],
+        "additionalProperties": false
+      }
+    }
+  }
+}

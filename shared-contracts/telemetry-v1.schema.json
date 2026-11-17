@@ -1,0 +1,499 @@
+{
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "protocolVersion",
+    "deviceId",
+    "sessionId",
+    "sequence",
+    "timestamp",
+    "timestampQuality",
+    "uptimeMs",
+    "source",
+    "health",
+    "motion",
+    "gps",
+    "status",
+    "alerts"
+  ],
+  "properties": {
+    "protocolVersion": {
+      "const": 1
+    },
+    "deviceId": {
+      "type": "string",
+      "pattern": "^[A-Za-z0-9_-]{3,64}$"
+    },
+    "sessionId": {
+      "type": "string",
+      "format": "uuid"
+    },
+    "sequence": {
+      "type": "integer",
+      "minimum": 0
+    },
+    "timestamp": {
+      "type": [
+        "string",
+        "null"
+      ],
+      "format": "date-time"
+    },
+    "timestampQuality": {
+      "type": "string",
+      "enum": [
+        "NTP",
+        "GPS",
+        "SYSTEM",
+        "PHONE",
+        "UNSYNCHRONIZED"
+      ]
+    },
+    "uptimeMs": {
+      "type": "integer",
+      "minimum": 0
+    },
+    "source": {
+      "type": "string",
+      "enum": [
+        "HARDWARE",
+        "SIMULATOR"
+      ]
+    },
+    "health": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "heartRateBpm",
+        "spo2Percent",
+        "fingerDetected",
+        "quality"
+      ],
+      "properties": {
+        "heartRateBpm": {
+          "type": [
+            "number",
+            "null"
+          ],
+          "minimum": 25,
+          "maximum": 240
+        },
+        "spo2Percent": {
+          "type": [
+            "number",
+            "null"
+          ],
+          "minimum": 50,
+          "maximum": 100
+        },
+        "fingerDetected": {
+          "type": "boolean"
+        },
+        "quality": {
+          "type": "string",
+          "enum": [
+            "VALID",
+            "LOW_SIGNAL",
+            "NO_CONTACT",
+            "UNAVAILABLE"
+          ]
+        }
+      }
+    },
+    "motion": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "axG",
+        "ayG",
+        "azG",
+        "gxDps",
+        "gyDps",
+        "gzDps",
+        "temperatureC",
+        "magnitudeG",
+        "pitchDeg",
+        "rollDeg",
+        "activity",
+        "fallState"
+      ],
+      "properties": {
+        "axG": {
+          "type": [
+            "number",
+            "null"
+          ],
+          "minimum": -16,
+          "maximum": 16
+        },
+        "ayG": {
+          "type": [
+            "number",
+            "null"
+          ],
+          "minimum": -16,
+          "maximum": 16
+        },
+        "azG": {
+          "type": [
+            "number",
+            "null"
+          ],
+          "minimum": -16,
+          "maximum": 16
+        },
+        "gxDps": {
+          "type": [
+            "number",
+            "null"
+          ],
+          "minimum": -2000,
+          "maximum": 2000
+        },
+        "gyDps": {
+          "type": [
+            "number",
+            "null"
+          ],
+          "minimum": -2000,
+          "maximum": 2000
+        },
+        "gzDps": {
+          "type": [
+            "number",
+            "null"
+          ],
+          "minimum": -2000,
+          "maximum": 2000
+        },
+        "temperatureC": {
+          "type": [
+            "number",
+            "null"
+          ],
+          "minimum": -40,
+          "maximum": 100
+        },
+        "magnitudeG": {
+          "type": [
+            "number",
+            "null"
+          ],
+          "minimum": 0,
+          "maximum": 28
+        },
+        "pitchDeg": {
+          "type": [
+            "number",
+            "null"
+          ],
+          "minimum": -180,
+          "maximum": 180
+        },
+        "rollDeg": {
+          "type": [
+            "number",
+            "null"
+          ],
+          "minimum": -180,
+          "maximum": 180
+        },
+        "activity": {
+          "type": "string",
+          "enum": [
+            "STILL",
+            "MOVING",
+            "VIGOROUS",
+            "UNKNOWN"
+          ]
+        },
+        "fallState": {
+          "type": "string",
+          "enum": [
+            "IDLE",
+            "FREEFALL",
+            "IMPACT",
+            "MONITORING",
+            "FALL",
+            "COOLDOWN"
+          ]
+        }
+      }
+    },
+    "gps": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "communicating",
+        "fix",
+        "satellites",
+        "latitude",
+        "longitude",
+        "altitudeM",
+        "speedKmh",
+        "lastFixAt",
+        "characters",
+        "checksumFailures"
+      ],
+      "properties": {
+        "communicating": {
+          "type": "boolean"
+        },
+        "fix": {
+          "type": "boolean"
+        },
+        "satellites": {
+          "type": [
+            "integer",
+            "null"
+          ],
+          "minimum": 0,
+          "maximum": 99
+        },
+        "latitude": {
+          "type": [
+            "number",
+            "null"
+          ],
+          "minimum": -90,
+          "maximum": 90
+        },
+        "longitude": {
+          "type": [
+            "number",
+            "null"
+          ],
+          "minimum": -180,
+          "maximum": 180
+        },
+        "altitudeM": {
+          "type": [
+            "number",
+            "null"
+          ],
+          "minimum": -1000,
+          "maximum": 20000
+        },
+        "speedKmh": {
+          "type": [
+            "number",
+            "null"
+          ],
+          "minimum": 0,
+          "maximum": 1500
+        },
+        "lastFixAt": {
+          "type": [
+            "string",
+            "null"
+          ],
+          "format": "date-time"
+        },
+        "characters": {
+          "type": "integer",
+          "minimum": 0
+        },
+        "checksumFailures": {
+          "type": "integer",
+          "minimum": 0
+        }
+      }
+    },
+    "status": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "firmwareVersion",
+        "rssiDbm",
+        "freeHeapBytes",
+        "wifiConnected",
+        "bleConnected",
+        "clockSource"
+      ],
+      "properties": {
+        "firmwareVersion": {
+          "type": "string",
+          "maxLength": 40
+        },
+        "rssiDbm": {
+          "type": [
+            "integer",
+            "null"
+          ],
+          "minimum": -127,
+          "maximum": 0
+        },
+        "freeHeapBytes": {
+          "type": [
+            "integer",
+            "null"
+          ],
+          "minimum": 0
+        },
+        "wifiConnected": {
+          "type": "boolean"
+        },
+        "bleConnected": {
+          "type": "boolean"
+        },
+        "clockSource": {
+          "type": "string",
+          "maxLength": 24
+        }
+      }
+    },
+    "alerts": {
+      "type": "array",
+      "maxItems": 8,
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": [
+          "kind",
+          "severity"
+        ],
+        "properties": {
+          "kind": {
+            "type": "string",
+            "enum": [
+              "IMPACT",
+              "EXPERIMENTAL_FALL",
+              "SENSOR_UNAVAILABLE"
+            ]
+          },
+          "severity": {
+            "type": "string",
+            "enum": [
+              "INFO",
+              "WARNING",
+              "CRITICAL"
+            ]
+          }
+        }
+      }
+    }
+  },
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://smarttrack.local/contracts/telemetry-v1.schema.json",
+  "title": "SmartTrack telemetry v1",
+  "allOf": [
+    {
+      "if": {
+        "properties": {
+          "timestampQuality": {
+            "const": "UNSYNCHRONIZED"
+          }
+        }
+      },
+      "then": {
+        "properties": {
+          "timestamp": {
+            "type": "null"
+          }
+        }
+      },
+      "else": {
+        "properties": {
+          "timestamp": {
+            "type": "string",
+            "format": "date-time"
+          }
+        }
+      }
+    },
+    {
+      "if": {
+        "properties": {
+          "health": {
+            "properties": {
+              "quality": {
+                "const": "VALID"
+              }
+            }
+          }
+        }
+      },
+      "then": {
+        "properties": {
+          "health": {
+            "properties": {
+              "fingerDetected": {
+                "const": true
+              },
+              "heartRateBpm": {
+                "type": "number"
+              },
+              "spo2Percent": {
+                "type": "number"
+              }
+            }
+          }
+        }
+      },
+      "else": {
+        "properties": {
+          "health": {
+            "properties": {
+              "heartRateBpm": {
+                "type": "null"
+              },
+              "spo2Percent": {
+                "type": "null"
+              }
+            }
+          }
+        }
+      }
+    },
+    {
+      "if": {
+        "properties": {
+          "gps": {
+            "properties": {
+              "fix": {
+                "const": true
+              }
+            }
+          }
+        }
+      },
+      "then": {
+        "properties": {
+          "gps": {
+            "properties": {
+              "communicating": {
+                "const": true
+              },
+              "latitude": {
+                "type": "number"
+              },
+              "longitude": {
+                "type": "number"
+              }
+            }
+          }
+        }
+      },
+      "else": {
+        "properties": {
+          "gps": {
+            "properties": {
+              "latitude": {
+                "type": "null"
+              },
+              "longitude": {
+                "type": "null"
+              },
+              "altitudeM": {
+                "type": "null"
+              },
+              "speedKmh": {
+                "type": "null"
+              }
+            }
+          }
+        }
+      }
+    }
+  ]
+}
