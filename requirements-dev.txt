@@ -1,5 +1,0 @@
-# PlatformIO brings pyserial for its monitor; pin it explicitly for USB scripts.
-platformio==6.1.18
-jsonschema==4.25.1
-bleak==3.1.0
-pyserial==3.5

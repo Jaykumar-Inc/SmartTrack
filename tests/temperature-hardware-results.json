@@ -1,0 +1,20 @@
+{
+  "date": "2026-11-24",
+  "firmware_uploaded": true,
+  "real_wifi_ingestion": true,
+  "backend_restart_automatically_recovered": true,
+  "new_real_record_after_restart": true,
+  "first_temperature_capture_c": 24.0,
+  "first_temperature_quality": "GOOD",
+  "first_motion_quality": "CALIBRATING",
+  "later_sensor_status": {
+    "max30102": "UNAVAILABLE",
+    "lsm6ds3": "UNAVAILABLE"
+  },
+  "later_temperature_quality": "UNAVAILABLE",
+  "later_temperature_c": null,
+  "invalid_temperature_is_null": true,
+  "initial_recovery_test": "Hotspot disappeared; restored JAY before repeat",
+  "physical_phone_tested": false,
+  "clinical_accuracy_validated": false
+}

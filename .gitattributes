@@ -1,12 +1,17 @@
-# Consistent repository text; Windows entry points retain native line endings.
-* text=auto eol=lf
+* text=auto
 *.cmd text eol=crlf
-*.bat text eol=crlf
 *.ps1 text eol=crlf
+*.java text eol=lf
+*.py text eol=lf
+*.ino text eol=lf
+*.h text eol=lf
 *.png binary
-*.ico binary
-*.jpg binary
-*.jpeg binary
 *.pdf binary
 *.docx binary
 *.pptx binary
+*.apk binary
+*.jar binary
+*.zip binary
+*.md text eol=lf
+*.json text eol=lf
+*.cpp text eol=lf

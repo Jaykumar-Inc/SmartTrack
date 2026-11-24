@@ -1,0 +1,32 @@
+.root { -fx-font-family: "Segoe UI"; -fx-font-size: 14px; -fx-base: #17263c; -fx-background: #0b1423; -fx-control-inner-background: #142238; -fx-text-fill: #e4edf8; -fx-accent: #22d3ee; }
+.label { -fx-text-fill: #e4edf8; }
+.title { -fx-font-size: 27px; -fx-font-weight: bold; }
+.muted { -fx-text-fill: #95abc5; -fx-font-size: 12px; }
+.sidebar { -fx-background-color: #101e32; -fx-border-color: transparent #21334e transparent transparent; }
+.card { -fx-background-color: #15243b; -fx-background-radius: 14px; -fx-padding: 22px; -fx-border-radius: 14px; -fx-border-color: #263953; }
+.button { -fx-background-color: #203957; -fx-text-fill: #d9f5ff; -fx-padding: 10px 17px; -fx-background-radius: 8px; -fx-cursor: hand; }
+.button:hover { -fx-background-color: #176d8c; }
+.text-field, .combo-box, .spinner { -fx-padding: 7px; -fx-background-radius: 7px; }
+.scroll-pane, .scroll-pane > .viewport { -fx-background-color: transparent; }
+.chart-plot-background { -fx-background-color: #101d30; }
+.chart-vertical-grid-lines, .chart-horizontal-grid-lines { -fx-stroke: #263953; }
+.chart-series-line { -fx-stroke: #22d3ee; -fx-stroke-width: 2px; }
+.axis { -fx-tick-label-fill: #95abc5; }
+.light { -fx-base: #dce7f3; -fx-background: #f1f5f9; -fx-control-inner-background: white; }
+.light .label { -fx-text-fill: #142238; }
+.light .card, .light .sidebar { -fx-background-color: #dce7f3; }
+.light .muted { -fx-text-fill: #435d79; }
+
+/* Clearer contrast, keyboard focus and compact connection controls. */
+.button:focused, .text-field:focused, .combo-box:focused { -fx-border-color: #51d8bd; -fx-border-radius: 8px; -fx-border-width: 1.5px; }
+.button:disabled { -fx-opacity: 0.5; }
+.card { -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.14), 12, 0, 0, 3); }
+.combo-box-popup .list-view { -fx-background-color: #17263c; }
+.combo-box-popup .list-cell { -fx-text-fill: #e4edf8; -fx-background-color: #17263c; }
+.combo-box-popup .list-cell:hover, .combo-box-popup .list-cell:selected { -fx-background-color: #176d8c; }
+.light .combo-box-popup .list-cell { -fx-text-fill: #142238; -fx-background-color: #f1f5f9; }
+
+.sidebar .button.nav-active { -fx-background-color: #176d79; -fx-text-fill: white; -fx-font-weight: bold; }
+
+.text-input { -fx-text-fill: #e4edf8; -fx-prompt-text-fill: #95abc5; -fx-highlight-fill: #176d8c; }
+.light .text-input { -fx-text-fill: #142238; -fx-prompt-text-fill: #526880; }

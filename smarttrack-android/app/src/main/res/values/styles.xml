@@ -1,0 +1,8 @@
+<resources>
+ <style name="Theme.SmartTrack" parent="Theme.Material3.Dark.NoActionBar">
+  <item name="colorPrimary">#22D3EE</item><item name="colorOnPrimary">#052333</item>
+  <item name="colorSurface">#14243A</item><item name="android:colorBackground">#0B1423</item>
+  <item name="android:fontFamily">sans</item><item name="android:windowLightStatusBar">false</item>
+  <item name="android:statusBarColor">#0B1423</item><item name="android:navigationBarColor">#0B1423</item>
+ </style>
+</resources>

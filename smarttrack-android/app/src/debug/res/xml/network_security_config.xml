@@ -1,0 +1,2 @@
+<!-- Debug LAN development only. Release requires HTTPS and system-trusted certificates. -->
+<network-security-config><base-config cleartextTrafficPermitted="true"><trust-anchors><certificates src="system"/></trust-anchors></base-config></network-security-config>

@@ -1,0 +1,30 @@
+{
+  "bootId": "manual-test-boot-001",
+  "sequenceNo": 1,
+  "capturedAt": null,
+  "simulated": false,
+  "health": {
+    "bpm": 76,
+    "spo2": 98,
+    "fingerPresent": true,
+    "quality": "GOOD"
+  },
+  "motion": {
+    "ax": 0.1,
+    "ay": 0.2,
+    "az": 9.8,
+    "gx": 0,
+    "gy": 0,
+    "gz": 0,
+    "tilt": 1,
+    "possibleFall": false,
+    "activity": "REST"
+  },
+  "temperature": {
+    "celsius": 28.0,
+    "quality": "GOOD",
+    "source": "LSM6DS3_INTERNAL",
+    "unit": "C",
+    "sampleAgeMs": 0
+  }
+}

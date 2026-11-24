@@ -1,0 +1,44 @@
+{
+  "deviceId": "SMARTTRACK-ESP32-01",
+  "bootId": "test-boot-01",
+  "sequenceNo": 1,
+  "uptimeMs": 120000,
+  "capturedAt": null,
+  "simulated": true,
+  "health": {
+    "fingerPresent": true,
+    "bpm": 76,
+    "spo2": 98,
+    "quality": "GOOD",
+    "valid": true
+  },
+  "motion": {
+    "ax": 0.01,
+    "ay": -0.02,
+    "az": 0.99,
+    "gx": 0.2,
+    "gy": -0.1,
+    "gz": 0.3,
+    "pitch": 1.2,
+    "roll": -0.8,
+    "tilt": 1.3,
+    "magnitude": 0.99025,
+    "activity": "REST",
+    "quality": "GOOD",
+    "calibration": "SIMULATED",
+    "fallState": "NORMAL",
+    "eventId": 0,
+    "impactCount": 0,
+    "possibleFall": false,
+    "impact": false,
+    "inactive": true,
+    "accelerationUnit": "g"
+  },
+  "temperature": {
+    "celsius": 28.0,
+    "quality": "GOOD",
+    "source": "LSM6DS3_INTERNAL",
+    "unit": "C",
+    "sampleAgeMs": 0
+  }
+}

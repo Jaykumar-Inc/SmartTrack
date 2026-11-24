@@ -1,0 +1,19 @@
+{
+  "port": "COM5",
+  "jsonPackets": 20,
+  "wifiConnected": true,
+  "serverAccepted": true,
+  "deviceIdMatches": true,
+  "sensors": {
+    "max30102": "OK",
+    "lsm6ds3": "OK"
+  },
+  "healthQuality": "NO_FINGER",
+  "motionQuality": "CALIBRATING",
+  "calibration": "MOVE_OR_NOT_FLAT",
+  "temperatureQuality": "GOOD",
+  "chipTemperatureC": 25.375,
+  "desktopArchiveLatestAvailable": true,
+  "desktopArchiveReadingIsReal": true,
+  "desktopArchiveReadingStale": false
+}

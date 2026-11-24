@@ -1,8 +1,0 @@
-# Explicit simulator/development profile. Never presents H2 as MySQL verification.
-spring:
-  datasource:
-    url: jdbc:h2:file:./.work/demo-db;MODE=MySQL;DATABASE_TO_LOWER=TRUE;DB_CLOSE_ON_EXIT=FALSE
-    username: sa
-    password: ""
-smarttrack:
-  allow-simulator: true
