@@ -17,7 +17,7 @@ Recorded on 24 November 2026 against the current source and real COM5 DOIT ESP32
 | Recovery | Backend restart with JAY on automatically recovered fresh real uploads |
 | Final upload | 20 JSON packets; both sensors OK; temperature GOOD at 25.375 C; Wi-Fi/server OK; fresh real backend reading |
 | Report | 14 A4 pages from Word, all pages rendered and reviewed |
-| Presentation | 15 editable slides, rendered through installed PowerPoint and reviewed |
+| Presentation | 12 editable slides, rendered through installed PowerPoint and reviewed |
 
 The first 15 second Serial capture produced 14 JSON packets, GOOD chip temperature at 24.0 C, motion CALIBRATING/MOVE_OR_NOT_FLAT and unavailable optical measurements. Actual desktop screenshots show another real moment at 24.1 C. During later checks both sensors became unavailable; firmware/backend correctly used null temperature. Restoring the hotspot restored uploads. The repeated backend-only restart recovered automatically. The final re-upload and 20 second Serial check detected both sensors, GOOD temperature and NO_FINGER optical status. Motion still required stable flat +Z-up calibration. These are separate observations, not an accuracy or clinical study.
 
