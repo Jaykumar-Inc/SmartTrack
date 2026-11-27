@@ -7,3 +7,6 @@ The revision adds actual desktop screenshots, clearly identified OLED software p
 The chart comes from the recorded20packet COM5 capture on24November2026. It uses19valid temperature samples, ranging25.375–25.750C; elapsed time derives from uptime so the unsynchronized clock does not create invented timestamps. This is an engineering observation, not a thermometer accuracy study.
 
 All12slides were rendered in installed PowerPoint, visually reviewed, and checked for text overflow. No physical Android image or photographed OLED is claimed.
+
+
+Slide 2 now uses basic English for the problem statement and goals. The latest named copy is SmartTrack_Project_Presentation_Simple_Slide2.pptx. The other 11 slides remain unchanged.
