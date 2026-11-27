@@ -41,6 +41,8 @@ public class SmartTrackDesktop extends Application {
   private boolean backendHealthy;
   private volatile boolean streaming;
   private final Label status = new Label("Disconnected"), freshness = new Label("No reading");
+  private final Label autoRefreshStatus = new Label("Auto refresh paused");
+  private Instant lastRefreshAt;
   private final ComboBox<String> device = new ComboBox<>(deviceIds);
   private final BorderPane root = new BorderPane();
   private final VBox content = new VBox(20);
@@ -55,14 +57,15 @@ public class SmartTrackDesktop extends Application {
       devices = JsonNodeFactory.instance.arrayNode();
   private Timeline poll;
   private Timeline ageClock;
-  private int historyLimit = 120, refreshSeconds = 3;
+  private int historyLimit = 120, refreshSeconds = 1;
   private boolean alertPopups = true, light = false;
   private final Set<Long> seenAlerts = new HashSet<>();
 
   @Override
   public void start(Stage stage) {
     this.stage = stage;
-    refreshSeconds = prefs.getInt("refresh", 3);
+    refreshSeconds = Math.clamp(prefs.getInt("refresh", 1), 1, 30);
+    autoRefreshStatus.setId("auto-refresh-status");
     light = prefs.getBoolean("light", false);
     alertPopups = prefs.getBoolean("alerts", true);
     Scene scene = new Scene(root, 1280, 840);
@@ -223,7 +226,7 @@ public class SmartTrackDesktop extends Application {
                 refresh();
               }
             });
-    Button refresh = button("Refresh", e -> refresh());
+    Button refresh = button("Refresh now", e -> refresh());
     refresh.disableProperty().bind(busy.or(connected.not()));
     Button toggle = new Button();
     toggle
@@ -249,7 +252,7 @@ public class SmartTrackDesktop extends Application {
     root.setCenter(scroll);
     connectionDetails.setText("Wi-Fi | " + api.baseUrl());
     connectionDetails.setWrapText(true);
-    VBox footer = new VBox(5, freshness, connectionDetails);
+    VBox footer = new VBox(5, freshness, autoRefreshStatus, connectionDetails);
     footer.setPadding(new Insets(12, 24, 12, 24));
     root.setBottom(footer);
     BorderPane.setMargin(freshness, new Insets(12, 24, 12, 24));
@@ -259,6 +262,7 @@ public class SmartTrackDesktop extends Application {
   private void startUpdates() {
     streaming = true;
     api.resume();
+    updateAutoRefreshStatus();
     if (ageClock != null) ageClock.stop();
     ageClock = new Timeline(new KeyFrame(Duration.seconds(1), e -> updateFreshness()));
     ageClock.setCycleCount(Timeline.INDEFINITE);
@@ -307,6 +311,7 @@ public class SmartTrackDesktop extends Application {
     if (poll != null) poll.stop();
     if (ageClock != null) ageClock.stop();
     if (api != null) api.pause();
+    updateAutoRefreshStatus();
     status.setText("Disconnected • values are historical");
     freshness.setText("DISCONNECTED • Historical values only");
   }
@@ -367,19 +372,43 @@ public class SmartTrackDesktop extends Application {
           alerts = result[2];
           latest = history.isEmpty() ? null : history.get(0);
           backendHealthy = true;
+          lastRefreshAt = Instant.now();
+          updateAutoRefreshStatus();
           status.setText("Wi-Fi server connected | " + api.diagnostics());
           updateFreshness();
           notifyAlerts();
-          if (!page.equals("Settings") && !page.equals("Devices")) render();
+          // Settings retains unsaved form input; Devices must reflect current connection state.
+          if (!page.equals("Settings")) render();
         },
         ex -> {
           refreshing.set(false);
           if (token == generation) {
             backendHealthy = false;
+            updateAutoRefreshStatus();
+            if (page.equals("Devices")) render();
             status.setText("Connection error: " + ex.getMessage());
             freshness.setText("BACKEND UNREACHABLE • Historical values only");
           }
         });
+  }
+
+  private void updateAutoRefreshStatus() {
+    if (!connected.get()) {
+      autoRefreshStatus.setText("Auto refresh paused");
+      return;
+    }
+    String updated =
+        lastRefreshAt == null
+            ? "waiting for server"
+            : "updated "
+                + java.time.format.DateTimeFormatter.ofPattern("HH:mm:ss")
+                    .withZone(java.time.ZoneId.systemDefault())
+                    .format(lastRefreshAt);
+    autoRefreshStatus.setText(
+        "Auto refresh: "
+            + refreshSeconds
+            + " s | "
+            + (backendHealthy ? updated : "connecting / retrying"));
   }
 
   private void updateFreshness() {
@@ -845,7 +874,7 @@ public class SmartTrackDesktop extends Application {
         .addAll(
             new Label("Local archive • Phone and desktop share the server history"),
             backend,
-            new Label("Refresh interval (seconds)"),
+            new Label("Automatic refresh interval (seconds)"),
             interval,
             popups,
             theme,
@@ -859,6 +888,7 @@ public class SmartTrackDesktop extends Application {
                     light = theme.isSelected();
                     prefs.put("backend", backend.getText());
                     prefs.putInt("refresh", refreshSeconds);
+                    updateAutoRefreshStatus();
                     prefs.putBoolean("alerts", alertPopups);
                     prefs.putBoolean("light", light);
                     root.getStyleClass().remove("light");

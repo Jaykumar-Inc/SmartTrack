@@ -2,9 +2,9 @@
   "platform": "Windows x64",
   "type": "portable app image",
   "java_bundled": true,
-  "app_version": "3.1.0",
+  "app_version": "3.1.1",
   "archive": "SmartTrack-Windows.zip",
-  "archive_bytes": 50280272,
-  "app_image_path": "E:\\java project\\.tools\\smarttrack-windows-x5qtud1d\\output\\SmartTrack",
+  "archive_bytes": 50280938,
+  "app_image_path": "E:\\java project\\.tools\\smarttrack-windows-i6x7863y\\output\\SmartTrack",
   "requires": "Existing local SmartTrack backend/MySQL over Wi-Fi"
 }

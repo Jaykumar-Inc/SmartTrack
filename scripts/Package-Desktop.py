@@ -32,7 +32,7 @@ output = work / 'output'
 with (root / 'tests/windows-app-image-build.log').open('w') as log:
     result = subprocess.run([
         str(jdk / 'bin/jpackage.exe'), '--type', 'app-image', '--name', 'SmartTrack',
-        '--app-version', '3.1.0', '--vendor', 'SmartTrack Project',
+        '--app-version', '3.1.1', '--vendor', 'SmartTrack Project',
         '--description', 'SmartTrack Wi-Fi desktop health, motion and chip temperature monitor',
         '--input', str(staging), '--main-jar', 'SmartTrack-desktop.jar',
         '--main-class', 'org.smarttrack.desktop.DesktopLauncher',
@@ -41,12 +41,14 @@ with (root / 'tests/windows-app-image-build.log').open('w') as log:
 assert result.returncode == 0, 'jpackage failed; see tests/windows-app-image-build.log'
 app = output / 'SmartTrack'
 (app/'Start SmartTrack.cmd').write_text('@echo off\ncd /d "%~dp0"\nstart "" "%~dp0SmartTrack.exe"\n',encoding='utf-8')
-(app/'README.txt').write_text("""SMARTTRACK WI-FI DESKTOP 3.1.0
+(app/'README.txt').write_text("""SMARTTRACK WI-FI DESKTOP 3.1.1
 Extract the full ZIP and run SmartTrack.exe. Java is included.
 Start the existing project's START_SMARTTRACK.cmd for its backend/MySQL.
 Connect phone and ESP32 to the laptop's JAY hotspot (2.4 GHz).
 Server for both apps: http://192.168.137.1:8080 (check SHOW_LOGIN.cmd).
 Sign into both apps with the same username/password from SHOW_LOGIN.cmd.
+Desktop readings and Devices status refresh automatically, normally every second.
+The footer shows the automatic interval and last update; Refresh now is optional.
 No pairing, serial data port or separate phone database is required.
 This ZIP supplies the desktop client/Java; the local server runs separately.
 Java licenses are in runtime/legal; dependency metadata is in its JARs.
@@ -58,7 +60,7 @@ with ZipFile(archive, 'w', ZIP_DEFLATED, compresslevel=6) as bundle:
             bundle.write(file, Path('SmartTrack') / file.relative_to(app))
 metadata = {
     'platform': 'Windows x64', 'type': 'portable app image', 'java_bundled': True,
-    'app_version': '3.1.0', 'archive': archive.name,
+    'app_version': '3.1.1', 'archive': archive.name,
     'archive_bytes': archive.stat().st_size, 'app_image_path': str(app),
     'requires': 'Existing local SmartTrack backend/MySQL over Wi-Fi'}
 (root / 'tests/windows-package-metadata.json').write_text(
